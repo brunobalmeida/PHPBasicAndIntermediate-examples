@@ -1,0 +1,145 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<title>Form - Stock and Supply Control</title>
+
+		<!-- Javascript files-->
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/transition.js"></script>
+		<script src="js/collapse.js"></script>
+		<script src="js/jquery-ui-1.12.1/jquery-ui.js"></script>
+		<script src="js/formValidation.js"></script>
+		
+
+		<!-- Stylesheets -->    
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="css/main.css" rel="stylesheet">
+			
+
+	</head>
+	<body>
+
+		<header>
+				<h1>Form - Stock and Supply Control</h1>
+		</header>
+		<hr />
+		<main>
+
+			<div class="container">
+				<h2>This is an application created to record information about parts and vendors</h2><br />
+				<h3>In order to help with the stock and supply control, all the information is recorded in our database and displayed in tabular form as required.</h3>
+				<h3>The 1st form collects information about the PARTS. The 2nd form collects information for VENDORS. The 3rd form collects the parameters desired to create your customized query.</h3>
+			</div>
+			<form onsubmit="return ValidateForm1()" action="parts.php"  method="post">
+				<div class="container">
+					<fieldset>
+						<legend>FORM 1 - Parts:</legend>
+						<p>All form fields are required.</p>
+                        <label for="vendorno">Vendor Number:</label><br />
+                        <input type="number" value="1" name="vendorno" id="vendorno" onblur="TrimString(this)" class="forms"><br />
+                        <label for="description">Description:</label><br />
+						<input type="text" name="description" id="description" onblur="TrimString(this)"  class="forms"><br />
+						<label for="onhand">Quantity on hand:</label><br />
+						<input type="text" name="onhand" id="onhand" onblur="TrimString(this)" class="forms"><br />
+						<label for="onorder">Quantity on order:</label><br />
+						<input type="text" name="onorder" id="onorder" onblur="TrimString(this)"class="forms"><br />
+						<label for="cost">Cost:</label><br />
+						<input type="text" name="cost" id="cost" onblur="TrimString(this)"class="forms"><br />
+						<label for="listprice">List Price:</label><br />
+						<input type="text" name="listprice" id="listprice" onblur="TrimString(this)"class="forms"><br />
+					</fieldset>
+					<input id="button" type="reset" value="Reset" class="buttons">
+					<input id="button" type="submit" value="Submit" class="buttons">
+					<br />
+					<span id="errormessage1"></span>
+				</div>
+			</form>
+			<br />
+			<form onsubmit="return ValidateForm2()" action="vendors.php"  method="post">
+				<div class="container">
+					<fieldset>
+						<legend>FORM 2 - Vendors:</legend>
+						<p>All form fields are required.</p>
+						<label for="vendname">Vendor name:</label><br />
+						<input type="text" name="vendname" id="vendname" onblur="TrimString(this)"  class="forms"><br />
+						<label for="address1">Address 1:</label><br />
+						<input type="text" name="address1" id="address1" onblur="TrimString(this)" class="forms"><br />
+						<label for="address2">Address 2:</label><br />
+						<input type="text" name="address2" id="address2" onblur="TrimString(this)" class="forms"><br />
+						<label for="city">City:</label><br />
+						<input type="text" name="city" id="city" onblur="TrimString(this)" class="forms"><br />
+						<label for="country">Country:</label><br />
+							<select id="country" name="country" size="1" onchange="dynamicdropdown(this.value)">
+								<optgroup label="Select your country:">
+									<option value="us">US</option>
+									<option value="canada">Canada</option>
+								</optgroup>
+							</select>
+						<br />
+						<label for="province">Province:</label><br />
+							<script>
+								document.write('<select name="province" id="province"><option value="">Select status</option></select>')
+							</script>
+							
+						<br /><br />
+						<label for="pcode">Postal Code:</label> <br />
+						<input type="text" name="pcode" id="pcode" placeholder="ex: M2M 2M2" onblur="TrimString(this)" class="forms"><br />
+						<label for="phone">Phone Number:</label><br />
+						<input type="text" name="phone" id="phone" placeholder="ex: 888 888 8888" onblur="TrimString(this)" class="forms"><br />
+						<label for="fax">Fax:</label><br />
+						<input type="text" name="fax" id="fax" onblur="TrimString(this)" class="forms">
+					</fieldset>
+					<input id="button" type="reset" value="Reset" class="buttons">
+					<input id="button" type="submit" value="Submit" class="buttons">
+					<br />
+					<span id="errormessage2"></span>
+				</div>
+			</form>
+			<br />
+			<form name="checkform" onsubmit="return ValidateForm3()" action="parameter.php"  method="post">
+				<div class="container">
+					<fieldset>
+						<legend>FORM 3 - Query parameters:</legend>
+						<p>You should select the information to be presented in the query.</p>
+						<p>Select, at least, 3 parameters to create your query:</p>
+                        <p>Note that you should select either from Parts OR from Vendors, if you select from both an error message will appear.</p>
+						<div>
+							<p><b>From PARTS table:</b><p><br />
+							<input class="parameter" type="checkbox" name="parameter[]" value="partid">PartID<br />
+							<input class="parameter" type="checkbox" name="parameter[]" value="vendorno">VendorNo<br />
+							<input class="parameter" type="checkbox" name="parameter[]" value="description">Description<br />
+							<input class="parameter" type="checkbox" name="parameter[]" value="onhand">OnHand<br />
+							<input class="parameter" type="checkbox" name="parameter[]" value="onorder">OnOrder<br />
+							<input class="parameter" type="checkbox" name="parameter[]" value="cost">Cost<br />
+							<input class="parameter" type="checkbox" name="parameter[]" value="listprice">List Price<br />	
+						</div>
+						<br />	
+						<div>
+							<p><b>From VENDORS table:</b><p><br />
+							<input class="parameter" type="checkbox" name="parameter[]" value="vendname">Vendor Name<br />
+							<input class="parameter" type="checkbox" name="parameter[]" value="address1">Address1<br />
+							<input class="parameter" type="checkbox" name="parameter[]" value="address2">Address2<br />
+							<input class="parameter" type="checkbox" name="parameter[]" value="city">City<br />
+							<input class="parameter" type="checkbox" name="parameter[]" value="province">Prov<br />
+							<input class="parameter" type="checkbox" name="parameter[]" value="pcode">Post Code<br />
+							<input class="parameter" type="checkbox" name="parameter[]" value="country">Country<br />
+							<input class="parameter" type="checkbox" name="parameter[]" value="phone">Phone<br />
+							<input class="parameter" type="checkbox" name="parameter[]" value="fax">Fax<br />
+						</div>
+						<br />
+					</fieldset>
+					
+					<input id="button" type="reset" value="Reset" class="buttons">
+					<input id="button" type="submit" value="Submit" class="buttons">
+					<br />
+					<span id="errormessage3"></span>
+				</div>
+			</form>		
+		</main>
+	</body>
+</html>
